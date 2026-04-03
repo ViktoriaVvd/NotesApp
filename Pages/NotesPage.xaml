@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:NoteApp.ViewModels"
+             x:Class="NoteApp.Pages.NotesPage"
+             xmlns:controls="clr-namespace:NoteApp.Controls">
+    
+
+    <ScrollView Orientation="Vertical">
+    <StackLayout Padding="20">
+            <Label Text="Додайте нотатку" FontSize="36" HorizontalOptions="Center" FontAttributes="Bold" Margin="20"/>
+            <Border Stroke="White" StrokeThickness="2" StrokeShape="RoundRectangle 5" Margin="10">
+                <Entry Placeholder="Введіть заголовок нотатки" Text="{Binding NewNoteTitle, Mode=TwoWay}"/>
+            </Border>
+            <Border Stroke="White" StrokeThickness="2" StrokeShape="RoundRectangle 5" Margin="10">
+                <Editor Placeholder="Введіть вміст нотатки" Text="{Binding NewNoteContent, Mode=TwoWay}" AutoSize="TextChanges"/>
+            </Border>
+            <Button Text="Додати нотатку" Margin="10" Command="{Binding AddItemCommand}" FontSize="24"/>
+            
+            <CollectionView ItemsSource="{Binding NoteItems}" Margin="10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*, Auto" Padding="5">
+                            <controls:NoteItemControl 
+                                    Grid.Column="0"
+                                    NoteTitle="{Binding Title}"
+                                    NoteContent="{Binding Content}"/>
+                            <Button Grid.Column="1" 
+                                    Text="X"
+                                    FontSize="36"
+                                    TextColor="Red"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:NotesViewModel}}, Path=DeleteItemCommand}" 
+                                    CommandParameter="{Binding .}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
