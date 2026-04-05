@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NoteApp.Pages.InfoPage">
+    <VerticalStackLayout>
+        <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="*, *" Padding="20" RowSpacing="10" ColumnSpacing="10">
+            <Label Text="Модель пристрою:"
+                    FontSize="24"
+                   HorizontalOptions="Center"
+                    Grid.Column="0" Grid.Row="0"/>
+            <Label Text="{Binding DeviceInfoModel}"
+                    FontSize="24"
+                    Grid.Column="1" Grid.Row="0"/>
+            <Label Text="Платформа пристрою:"
+                    FontSize="24"
+                     HorizontalOptions="Center"
+                    Grid.Column="0" Grid.Row="1"/>
+            <Label Text="{Binding DeviceInfoPlatform}"
+                    FontSize="24"
+                    Grid.Column="1" Grid.Row="1"/>
+            <Label Text="Версія пристрою:"
+                    FontSize="24"
+                    HorizontalOptions="Center"
+                    Grid.Column="0" Grid.Row="2"/>
+            <Label Text="{Binding DeviceInfoVersion}"
+                    FontSize="24"
+                    Grid.Column="1" Grid.Row="2"/>
+            <Label Text="Стан батареї:"
+                    FontSize="24"
+                    HorizontalOptions="Center"
+                    Grid.Column="0" Grid.Row="3"/>
+            <Label Text="{Binding DeviceInfoBattery, StringFormat='{0} %'}"
+                    FontSize="24"
+                    Grid.Column="1" Grid.Row="3"/>
+            <Label Text="Стан мережі:"
+                    FontSize="24"
+                    HorizontalOptions="Center"
+                    Grid.Column="0" Grid.Row="4"/>
+            <Label Text="{Binding NetInfo}"
+                    FontSize="24"
+                    Grid.Column="1" Grid.Row="4"/>
+        </Grid>
+        <Button Text="На головну" Command="{Binding GoBackCommand}" WidthRequest="150" HeightRequest="60"/>
+    </VerticalStackLayout>
+</ContentPage>

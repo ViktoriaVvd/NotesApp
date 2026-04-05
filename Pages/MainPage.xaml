@@ -8,25 +8,27 @@
     <StackLayout Padding="20" Margin="20">
         <Label Text="З поверненням!" FontSize="36" HorizontalOptions="Center"/>
         <Image Source="dotnet_bot.png" WidthRequest="200" HeightRequest="200"/>
+        <Label Text="{Binding CurrentDateTime}" FontSize="24" TextColor="BlanchedAlmond" HorizontalOptions="Center"/>
 
         <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" ColumnSpacing="10" RowSpacing="10">
             <Button Grid.Column="0" 
             Grid.Row="0" 
             Grid.RowSpan="2" 
-            Text="Кнопка 1" 
-            BackgroundColor="LightSkyBlue"/>
-
-            <Button Grid.Column="1" 
-            Grid.Row="0" 
-            Text="Перейти до нотаток"
+            Text="Перейти до нотаток" 
             BackgroundColor="LightSkyBlue"
             Command="{Binding GoToNotesCommand}"/>
 
             <Button Grid.Column="1" 
-            Grid.Row="1" 
+            Grid.Row="0" 
             Text="Перейти до завдань"
             BackgroundColor="LightSkyBlue"
             Command="{Binding GoToTasksCommand}"/>
+
+            <Button Grid.Column="1" 
+            Grid.Row="1" 
+            Text="Перевірка властивостей пристрою та мережі"
+            BackgroundColor="LightSkyBlue"
+            Command="{Binding GoToInfoCommand}"/>
 
         </Grid>
     </StackLayout>

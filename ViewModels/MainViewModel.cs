@@ -9,54 +9,26 @@ namespace NoteApp.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-        private readonly NotesDatabases _database;
-
         [ObservableProperty]
-        private ObservableCollection<NoteItem> noteItems;
-
-        [ObservableProperty]
-        private string newNoteTitle;
-
-        [ObservableProperty]
-        private string newNoteContent;
-
-        public MainViewModel()
-        {
-            _database = new NotesDatabases();
-            LoadItems();
-        }
-
-
-        [RelayCommand]
-        private async void LoadItems()
-        {
-            var items = await _database.GetItems();
-            NoteItems = new ObservableCollection<NoteItem>(items);
-        }
+        private DateTime currentDateTime = DateTime.Now;
 
         [RelayCommand]
 
-        private async void GoToNotes() {
+        private async Task GoToNotes() {
             await Shell.Current.GoToAsync("//NotesPage");
         }
 
         [RelayCommand]
-        private async void GoToTasks() {
-            
+        private async Task GoToTasks() {
+            await Shell.Current.GoToAsync("//TasksPage");
         }
 
         [RelayCommand]
-        public async Task AddItem()
+        private async Task GoToInfo()
         {
-            //await Shell.Current.DisplayAlertAsync("Назва нотатки", "Вміст нотатки", "закрити");
-            if (!string.IsNullOrEmpty(NewNoteTitle) || !string.IsNullOrEmpty(NewNoteContent))
-            {
-                var newItem = new NoteItem { Title = NewNoteTitle, Content = NewNoteContent };
-                await _database.SaveItem(newItem);
-                NewNoteTitle = "";
-                NewNoteContent = "";
-                LoadItems();
-            }
+            await Shell.Current.GoToAsync("//InfoPage");
         }
+
+
     }
 }

@@ -36,6 +36,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <Button Text="На головну" Command="{Binding GoBackCommand}" WidthRequest="150" HeightRequest="60"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

@@ -56,5 +56,11 @@ namespace NoteApp.ViewModels
             await _database.DeleteItem(item);
             LoadItems();
         }
+
+        [RelayCommand]
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync("//MainPage");
+        }
     }
 }

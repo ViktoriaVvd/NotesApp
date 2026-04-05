@@ -12,9 +12,19 @@
         Route="MainPage" />
     
     <ShellContent
-    Title="Завдання"
+    Title="Нотатки"
     ContentTemplate="{DataTemplate local:NotesPage}"
     Route="NotesPage" />
-    
+
+    <ShellContent
+    Title="Завдання"
+    ContentTemplate="{DataTemplate local:TasksPage}"
+    Route="TasksPage" />
+
+    <ShellContent
+    Title="Інформація"
+    ContentTemplate="{DataTemplate local:InfoPage}"
+    Route="InfoPage" />
+
 
 </Shell>
