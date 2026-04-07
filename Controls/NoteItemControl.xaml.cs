@@ -27,19 +27,19 @@ public partial class NoteItemControl : ContentView
         InitializeComponent();
     }
 
-    private async void openNote(object sender, TappedEventArgs e)
-    {
-        if (Shell.Current != null)
-        {
-            bool check = await Shell.Current.DisplayAlertAsync(NoteTitle, NoteContent, "Редагувати", "Закрити");
-            if (check)
-            {
-                await Shell.Current.GoToAsync("editing", new Dictionary<string, object>
-                {
-                    ["NoteTitle"] = NoteTitle,
-                    ["NoteContent"] = NoteContent
-                });
-            }
-        }
-    }
+    //private async void openNote(object sender, TappedEventArgs e)
+    //{
+    //    if (Shell.Current != null)
+    //    {
+    //        bool check = await Shell.Current.DisplayAlertAsync(NoteTitle, NoteContent, "Редагувати", "Закрити");
+    //        if (check)
+    //        {
+    //            await Shell.Current.GoToAsync("editing", new Dictionary<string, object>
+    //            {
+    //                ["NoteTitle"] = NoteTitle,
+    //                ["NoteContent"] = NoteContent
+    //            });
+    //        }
+    //    }
+    //}
 }

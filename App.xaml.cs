@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
 namespace NoteApp
 {

@@ -1,61 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.Text.Json;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using NoteApp.Models;
-using NoteApp.Services;
+using NoteApp.Service;
 
 namespace NoteApp.ViewModels
 {
-    using System.Collections.ObjectModel;
-    using System.Text.Json;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Input;
 
     public partial class TasksViewModel : ObservableObject
     {
-        private static readonly HttpClient _httpClient = new HttpClient();
-        private readonly JsonSerializerOptions _serializerOptions = new()
-        {
-            PropertyNameCaseInsensitive = true
-        };
-
+        private readonly TasksService _service = new TasksService();
         public ObservableCollection<TaskItem> Tasks { get; } = new();
 
+        [ObservableProperty]
+        private bool _isButtonVisible = true;
+
+        [ObservableProperty]
+        private bool _isRefreshing;
 
         [RelayCommand]
-        private async Task LoadData()
+        public async Task LoadTasks()
         {
+            IsRefreshing = true;
             try
             {
-                if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet) return;
+                var items = await _service.GetTodosAsync();
 
-                var response = await _httpClient.GetAsync("https://jsonplaceholder.typicode.com/todos/1");
-
-                if (response.IsSuccessStatusCode)
+                if (items != null && items.Count > 0)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var todoItem = JsonSerializer.Deserialize<TaskItem>(json, _serializerOptions);
-
-                    if (todoItem != null)
+                    Tasks.Clear();
+                    foreach (var item in items)
                     {
-                        Tasks.Add(todoItem);
+                        Tasks.Add(item);
                     }
+
+                    IsButtonVisible = false;
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Помилка: {ex.Message}");
+            }
+            finally
+            {
+                IsRefreshing = false;
             }
         }
 
+        [RelayCommand]
+        private async Task DeleteTask(TaskItem task)
+        {
+            if (task == null) return;
+            await _service.DeleteTaskAsync(task);
+        }
+
+
+        [RelayCommand]
+        private async Task ToDb()
+        {
+            var items = await _service.ShowDbContent();
+
+            string content = items.Any()
+            ? " ~ " + string.Join("\n ~ ", items.Select(i => i.Title))
+            : "База даних порожня";
+            await Shell.Current.DisplayAlertAsync("Елементи в БД", content, "OK");
+        }
         [RelayCommand]
         private async Task GoBack()
         {
             await Shell.Current.GoToAsync("//MainPage");
         }
     }
-}
+} 

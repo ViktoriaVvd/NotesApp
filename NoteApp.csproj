@@ -5,6 +5,11 @@
 		<TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
 
+
+
+		<RunAOTCompilation>true</RunAOTCompilation>
+		<AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
+
 		<!-- Note for MacCatalyst:
 		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
 		When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
@@ -74,6 +79,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Controls\TaskItemControl.xaml.cs">
+	    <DependentUpon>TaskItemControl.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Controls\NoteItemControl.xaml.cs">
 	    <DependentUpon>NoteItemControl.xaml</DependentUpon>
 	  </Compile>
@@ -83,6 +91,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Controls\TaskItemControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\InfoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

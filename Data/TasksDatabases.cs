@@ -5,31 +5,55 @@ namespace NoteApp.Data
 {
     public class TasksDatabases
     {
-        private readonly SQLiteAsyncConnection _connection;
+        private SQLiteAsyncConnection _connection;
 
-        public TasksDatabases()
+        public async Task Init()
         {
-            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "ToDo.db");
+            if (_connection != null) return;
+
+            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "Tasks.db");
             _connection = new SQLiteAsyncConnection(dbPath);
-            _connection.CreateTableAsync<TaskItem>().Wait();
+            await _connection.CreateTableAsync<TaskItem>();
         }
-        public Task<List<TaskItem>> GetItems()
+        public async Task<List<TaskItem>> GetItems()
         {
-            return _connection.Table<TaskItem>().ToListAsync();
+            await Init();
+            return await _connection.Table<TaskItem>().ToListAsync();
         }
 
-        public Task<int> SaveItem(TaskItem item)
+        public async Task<int> SaveItem(TaskItem item)
         {
+            await Init();
             if (item.Id == 0)
-                return _connection.InsertAsync(item);
+                return await _connection.InsertAsync(item);
             else
-                return _connection.UpdateAsync(item);
+                return await _connection.UpdateAsync(item);
 
         }
 
-        public Task<int> DeleteItem(TaskItem item)
+        public async Task SaveAllItems(List<TaskItem> items)
         {
-            return _connection.DeleteAsync(item);
+            await Init();
+            await _connection.InsertAllAsync(items);
+        }
+
+
+        public async Task<int> DeleteItem(TaskItem item)
+        {
+            await Init();
+            return await _connection.DeleteAsync(item);
+        }
+
+        public async Task<int> DeleteItemById(int id)
+        {
+            await Init();
+            return await _connection.DeleteAsync<TaskItem>(id);
+        }
+
+        public async Task<int> ClearDB()
+        {
+            await Init();
+            return await _connection.DeleteAllAsync<TaskItem>();
         }
     }
 }

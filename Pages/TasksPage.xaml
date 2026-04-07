@@ -1,42 +1,60 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:NoteApp.Models"
-             x:Class="NoteApp.Pages.TasksPage">
-    <VerticalStackLayout Spacing="10" Padding="10">
-        <Label Text="Список завдань" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+             xmlns:controls="clr-namespace:NoteApp.Controls"
+             xmlns:local="clr-namespace:NoteApp.ViewModels"
+             x:Class="NoteApp.Pages.TasksPage"
+             Title="Список завдань">
 
-        <CollectionView ItemsSource="{Binding Tasks}" Margin="10">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:TaskItem">
-                    <Border
-                       Margin="0,5" 
-                       Padding="15"
-                       BackgroundColor="#F0F0F0">
+    <Grid RowDefinitions="Auto, *, Auto" Padding="10">
 
-                        <HorizontalStackLayout Spacing="15">
-                            <CheckBox IsChecked="{Binding Completed}" IsEnabled="False" VerticalOptions="Center"/>
+        <Button Grid.Row="0"
+                Text="Завантажити дані" 
+                Command="{Binding LoadTasksCommand}"
+                IsVisible="{Binding IsButtonVisible}"
+                HeightRequest="50"
+                Margin="0,0,0,10"
+                BackgroundColor="DarkSlateBlue"
+                TextColor="White" />
 
-                            <VerticalStackLayout VerticalOptions="Center">
-                                <Label Text="{Binding Title}" 
-                                   FontSize="16" 
-                                   FontAttributes="Bold" 
-                                   TextColor="Black" />
+        <RefreshView Grid.Row="1" 
+                     IsRefreshing="{Binding IsRefreshing}" 
+                     Command="{Binding LoadTasksCommand}">
 
-                                <Label Text="{Binding Id, StringFormat='ID завдання: {0}'}" 
-                                   FontSize="12" 
-                                   TextColor="Gray" />
-                            </VerticalStackLayout>
-                        </HorizontalStackLayout>
+            <CollectionView ItemsSource="{Binding Tasks}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TaskItem">
+                        <controls:TaskItemControl 
+                            Task="{Binding .}" 
+                            DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type local:TasksViewModel}}, Path=DeleteTaskCommand}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
 
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                <CollectionView.EmptyView>
+                    <Label Text="Список порожній. Натисніть кнопку завантаження." 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           TextColor="Gray" />
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
 
-        <Button Text="Завантажити дані" 
-            Command="{Binding LoadDataCommand}" 
-            Margin="10" />
-        <Button Text="На головну" Command="{Binding GoBackCommand}" WidthRequest="150" HeightRequest="60"/>
-    </VerticalStackLayout>
+        <Grid Grid.Row="2" 
+              ColumnDefinitions="*, *" 
+              ColumnSpacing="10" 
+              Padding="0,10,0,0">
+
+            <Button Grid.Column="0"
+                    Text="Переглянути вміст БД"
+                    Command="{Binding ToDbCommand}"
+                    
+                    TextColor="White" />
+
+            <Button Grid.Column="1"
+                    Text="На головну"
+                    Command="{Binding GoBackCommand}"
+                    TextColor="White" />
+        </Grid>
+
+    </Grid>
 </ContentPage>

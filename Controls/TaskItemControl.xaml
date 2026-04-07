@@ -1,0 +1,19 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NoteApp.Controls.TaskItemControl"
+             x:Name="this">
+    <Border Padding="10">
+        <HorizontalStackLayout Spacing="10">
+            <CheckBox 
+    IsChecked="{Binding Source={x:Reference this}, Path=Task.Completed}"
+    CheckedChanged="OnCheckBoxCheckedChanged" />
+
+            <VerticalStackLayout>
+                <Label Text="{Binding Source={x:Reference this}, Path=Task.Title}" />
+                <Label Text="{Binding Source={x:Reference this}, Path=Task.Id}" 
+                       TextColor="Gray" 
+                       FontSize="12" />
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
+    </Border>
+</ContentView>
